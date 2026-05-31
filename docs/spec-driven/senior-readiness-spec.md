@@ -75,16 +75,16 @@ structure validation.
 
 | Criterion | Evidence | Status | Notes |
 | --- | --- | --- | --- |
-| Product problem and users are explicit | `README.md`, `docs/product/problem.md`, `docs/product/personas.md` | Planned | Filled during documentation pass. |
-| TCP protocol commands are implemented | `internal/server`, `docs/api/README.md` | Planned | Must include errors and bounded `KEYS`. |
-| Store is thread-safe with documented invariants | `internal/store`, `docs/domain/invariants.md` | Planned | Must include concurrency tests. |
-| TTL uses lazy and background expiration | `internal/store`, `docs/adr/0003-use-lazy-and-background-ttl-expiration.md` | Planned | Must document cleanup lag trade-off. |
-| AOF handles corrupted and partial records | `internal/aof`, `internal/aof/*_test.go` | Planned | Replay report must distinguish both. |
-| Snapshot restore is tested | `internal/store`, `internal/server` tests | Planned | Optional feature included because `SAVE` is in scope. |
-| Metrics and pprof are exposed | `internal/server/admin.go`, `deploy/grafana/gocachelab-dashboard.json` | Planned | Admin listener only. |
-| Benchmarks cover required scenarios | `internal/*_bench_test.go`, `benchmarks/baseline.md` | Planned | Full numbers depend on local run. |
-| Failure scenarios are tested | `internal/server`, `internal/aof` tests | Planned | Includes invalid command and disconnect. |
-| CI runs quality gates | `.github/workflows/ci.yml` | Planned | Uses Go native tooling. |
+| Product problem and users are explicit | `README.md`, `docs/product/problem.md`, `docs/product/personas.md` | Done | Names product workflow, users, value, and non-goals. |
+| TCP protocol commands are implemented | `internal/server/tcp.go`, `internal/server/tcp_test.go`, `docs/api/README.md` | Done | Includes command errors and bounded `KEYS`. |
+| Store is thread-safe with documented invariants | `internal/store/store.go`, `internal/store/store_test.go`, `docs/domain/invariants.md` | Done | Race detector passed for concurrency tests. |
+| TTL uses lazy and background expiration | `internal/store/store.go`, `cmd/gocachelab/main.go`, `docs/adr/0003-use-lazy-and-background-ttl-expiration.md` | Done | Cleanup lag trade-off documented. |
+| AOF handles corrupted and partial records | `internal/aof/aof.go`, `internal/aof/aof_test.go` | Done | Replay report distinguishes applied, corrupted, and partial records. |
+| Snapshot restore is tested | `internal/store/snapshot.go`, `internal/store/snapshot_test.go`, `internal/server/tcp_test.go` | Done | `SAVE` writes JSON snapshot atomically. |
+| Metrics and pprof are exposed | `internal/server/admin.go`, `internal/metrics/metrics_test.go`, `deploy/grafana/gocachelab-dashboard.json`, `openapi.yaml` | Done | Admin listener exposes health, readiness, metrics, and pprof. |
+| Benchmarks cover required scenarios | `internal/store/store_bench_test.go`, `internal/aof/aof_bench_test.go`, `internal/server/tcp_bench_test.go`, `benchmarks/results/2026-05-31-smoke.md` | Done | TCP GET p95 155 us and SET p95 145 us in smoke run. |
+| Failure scenarios are tested | `internal/server/tcp_test.go`, `internal/aof/aof_test.go`, `internal/store/store_test.go` | Done | Includes invalid command, disconnect, corrupt AOF, partial AOF, and cleanup races. |
+| CI runs quality gates | `.github/workflows/ci.yml`, `scripts/validate_repository.sh` | Done | CI includes format, vet, tests, race, coverage, benchmark smoke, Docker, and docs validation. |
 
 ## Out of Scope
 
@@ -93,4 +93,3 @@ structure validation.
 - Authentication and ACLs for public exposure.
 - AOF compaction after snapshot.
 - Eviction policies such as LRU/LFU.
-

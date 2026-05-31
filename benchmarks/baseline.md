@@ -27,6 +27,7 @@ go test -bench=. -run '^$' -benchtime=1x ./...
 | 100 concurrent logical clients | `BenchmarkStore100ConcurrentClients` |
 | TTL cleanup | `BenchmarkTTLCleanup` |
 | AOF replay | `BenchmarkAOFReplay100kRecords` |
+| TCP SET/GET percentiles | `BenchmarkTCPSetGetLatencyPercentiles` |
 
 ## Local Targets
 
@@ -38,7 +39,21 @@ go test -bench=. -run '^$' -benchtime=1x ./...
 
 ## Current Evidence
 
-The verification report records the commands run in this implementation pass.
-Full p50/p95/p99 latency export is deferred to a dedicated benchmark run because
-Go benchmark output reports ns/op rather than percentile histograms.
+Smoke benchmark run on 2026-05-31, Apple M1 Max, `darwin/arm64`,
+`go test -bench=. -run '^$' -benchtime=1x ./...`:
 
+| Metric | Result |
+| --- | --- |
+| TCP GET p50 | 50 us |
+| TCP GET p95 | 155 us |
+| TCP GET p99 | 776 us |
+| TCP SET p50 | 50 us |
+| TCP SET p95 | 145 us |
+| TCP SET p99 | 1,619 us |
+| AOF replay 100k records | 22.62 ms |
+| TTL cleanup batch | 145.92 us |
+| 100 concurrent logical clients | 104.58 us |
+
+These numbers are smoke evidence, not capacity-planning numbers. Longer
+benchmarks with representative value sizes should be stored under
+`benchmarks/results/` before using the results for operational sizing.

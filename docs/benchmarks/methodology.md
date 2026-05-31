@@ -13,6 +13,8 @@ smoke check for `/healthz` and `/metrics`.
   the store API.
 - `BenchmarkTTLCleanup`: expired-key cleanup batches.
 - `BenchmarkAOFReplay100kRecords`: replay throughput for durable records.
+- `BenchmarkTCPSetGetLatencyPercentiles`: TCP round-trip p50/p95/p99 for SET and
+  GET with AOF disabled.
 
 ## Commands
 
@@ -33,6 +35,4 @@ go test -bench=. -run '^$' -benchtime=1x ./...
 - SET p95 under 2 ms with `GOCACHELAB_AOF_FSYNC=never` or `everysec`.
 - Race detector clean for command, TTL, and cleanup concurrency tests.
 
-The repo records measured results in `benchmarks/results/` when full benchmark
-runs are executed.
-
+The repo records measured results in `benchmarks/results/`.
