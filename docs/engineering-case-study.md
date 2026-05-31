@@ -34,6 +34,9 @@ at save time.
 ## 6. Consistency Model
 
 Within one process, each command observes the result of prior completed commands.
+Mutating commands are appended before the in-memory mutation, so append failure
+returns an error without changing the keyspace. A process exit after append but
+before the client response can replay a command the client did not observe.
 AOF replay preserves record order. `fsync=everysec` may lose up to roughly one
 second of acknowledged writes during a host crash.
 
@@ -89,4 +92,3 @@ excluded from v1.
 
 Add RESP compatibility, AOF compaction, command latency histograms, connection
 quotas, and a sharded store experiment with before-and-after benchmark results.
-

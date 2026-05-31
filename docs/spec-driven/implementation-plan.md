@@ -44,8 +44,10 @@ go vet ./...
 
 - A single `RWMutex` is intentionally simple but can bottleneck mixed write
   workloads.
-- AOF appends after in-memory mutation leave a small crash window; `fsync=always`
-  reduces that window at higher SET latency.
+- AOF uses a write-ahead append before in-memory mutation so append failures do
+  not acknowledge or apply writes. A process exit after append but before the
+  response can replay a command the client did not observe; `fsync=always`
+  narrows host-crash loss at higher SET latency.
 - Background TTL cleanup is batch-based and may lag under large expiry storms.
 - The simple protocol is not RESP-compatible, so existing Redis clients cannot
   be reused yet.
@@ -57,4 +59,3 @@ go vet ./...
 - Authentication, ACLs, and connection quotas.
 - Sharded map implementation for high write concurrency.
 - Replication and promoted standby recovery.
-
