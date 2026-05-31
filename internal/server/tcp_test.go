@@ -25,6 +25,7 @@ func TestExecuteCommandLifecycle(t *testing.T) {
 
 	assertExecute(t, srv, "PING\r\n", "+PONG\r\n")
 	assertExecute(t, srv, "SET user:1 Ada\r\n", "+OK\r\n")
+	assertExecute(t, srv, "SET session:1 token EX 60\r\n", "+OK\r\n")
 	assertExecute(t, srv, "GET user:1\r\n", "$3\r\nAda\r\n")
 	assertExecute(t, srv, "EXISTS user:1 missing\r\n", ":1\r\n")
 	assertExecute(t, srv, "TTL user:1\r\n", ":-1\r\n")
