@@ -1,0 +1,92 @@
+openapi: 3.1.0
+info:
+  title: Gocachelab Admin API
+  version: 0.1.0
+  description: |
+    Administrative HTTP endpoints for health, readiness, Prometheus metrics, and
+    Go pprof. The cache data API is TCP and is documented in docs/api/README.md.
+servers:
+  - url: http://127.0.0.1:8080
+paths:
+  /healthz:
+    get:
+      summary: Liveness check
+      responses:
+        "200":
+          description: Process is alive.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              examples:
+                ok:
+                  value:
+                    status: ok
+  /readyz:
+    get:
+      summary: Readiness check
+      responses:
+        "200":
+          description: Process is ready to serve TCP and admin traffic.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+              examples:
+                ready:
+                  value:
+                    status: ready
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      responses:
+        "200":
+          description: Prometheus text exposition format.
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                sample:
+                  value: |
+                    # TYPE gocachelab_keys gauge
+                    gocachelab_keys 42
+  /debug/pprof/:
+    get:
+      summary: pprof index
+      responses:
+        "200":
+          description: Go pprof index page. Restrict this endpoint to trusted operators.
+          content:
+            text/html:
+              schema:
+                type: string
+  /debug/pprof/profile:
+    get:
+      summary: CPU profile
+      parameters:
+        - name: seconds
+          in: query
+          schema:
+            type: integer
+            default: 30
+            minimum: 1
+            maximum: 120
+      responses:
+        "200":
+          description: Binary pprof CPU profile.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+components:
+  schemas:
+    Status:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+

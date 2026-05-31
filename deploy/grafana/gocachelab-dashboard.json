@@ -1,0 +1,56 @@
+{
+  "title": "Gocachelab Redis-like Store",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Connected clients",
+      "targets": [
+        {
+          "expr": "gocachelab_connected_clients"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Commands and errors",
+      "targets": [
+        {
+          "expr": "rate(gocachelab_commands_total[5m])"
+        },
+        {
+          "expr": "rate(gocachelab_command_errors_total[5m])"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Keys and expired keys",
+      "targets": [
+        {
+          "expr": "gocachelab_keys"
+        },
+        {
+          "expr": "rate(gocachelab_expired_keys_total[5m])"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "AOF replay and append errors",
+      "targets": [
+        {
+          "expr": "gocachelab_aof_append_errors_total"
+        },
+        {
+          "expr": "gocachelab_aof_replay_corrupted_total"
+        },
+        {
+          "expr": "gocachelab_aof_replay_partial_total"
+        }
+      ]
+    }
+  ]
+}
+

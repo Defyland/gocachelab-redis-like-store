@@ -1,0 +1,21 @@
+services:
+  gocachelab:
+    build: .
+    ports:
+      - "7379:7379"
+      - "8080:8080"
+    environment:
+      GOCACHELAB_TCP_ADDR: 0.0.0.0:7379
+      GOCACHELAB_ADMIN_ADDR: 0.0.0.0:8080
+      GOCACHELAB_AOF_FSYNC: everysec
+    volumes:
+      - gocachelab-data:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  gocachelab-data:
+
