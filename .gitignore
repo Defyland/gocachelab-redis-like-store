@@ -3,7 +3,7 @@
 /coverage.out
 /coverage.txt
 /data/
+/gocachelab
 /tmp/
 *.test
 *.prof
-
