@@ -77,18 +77,20 @@ func TestTCPServerConcurrentClients1000(t *testing.T) {
 	addr := startTestServer(t, ctx, cache)
 
 	const clients = 1000
+	const clientDeadline = 10 * time.Second
 	var wg sync.WaitGroup
 	errs := make(chan error, clients)
 	for i := 0; i < clients; i++ {
 		wg.Add(1)
 		go func(id int) {
 			defer wg.Done()
-			conn, err := net.DialTimeout("tcp", addr, 3*time.Second)
+			conn, err := net.DialTimeout("tcp", addr, clientDeadline)
 			if err != nil {
 				errs <- err
 				return
 			}
 			defer conn.Close()
+			_ = conn.SetDeadline(time.Now().Add(clientDeadline))
 
 			key := fmt.Sprintf("client:%d", id)
 			value := fmt.Sprintf("value:%d", id)

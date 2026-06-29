@@ -42,7 +42,7 @@ The runtime is a single Go process with clear module boundaries:
 
 ## 6. Tech stack
 
-- Go `1.25.10`
+- Go `1.25.11`
 - Standard-library networking, synchronization, JSON, HTTP, and pprof
 - Native Go tests, benchmarks, race detector, and `go vet`
 - Docker and GitHub Actions for build validation
@@ -130,10 +130,21 @@ printf 'SET user:1 Ada\r\nGET user:1\r\nQUIT\r\n' | nc 127.0.0.1 7379
 ## 17. How to run tests
 
 ```sh
-go test ./...
-go test -race ./...
-go test -bench=. -run '^$' ./...
+make test
+make race
+make bench
 ```
+
+## 17.1 How to evaluate this repository in five minutes
+
+Run the reviewer path:
+
+```sh
+make review
+```
+
+That validates the repository evidence pack, formatting, vet, tests, race
+checks, benchmark compilation, build packaging, and the Go vulnerability scan.
 
 ## 18. Failure scenarios
 
@@ -152,4 +163,3 @@ Runbooks live under [docs/runbooks](docs/runbooks).
 - Optional sharded map for write-heavy workloads.
 - Connection limits and ACLs for exposed deployments.
 - Replication protocol for warm standby nodes.
-
