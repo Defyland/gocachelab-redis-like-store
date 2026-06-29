@@ -127,6 +127,17 @@ Example:
 printf 'SET user:1 Ada\r\nGET user:1\r\nQUIT\r\n' | nc 127.0.0.1 7379
 ```
 
+## 16.1 Deployment truth
+
+Gocachelab intentionally does not ship a Railway demo. The product boundary is
+an unauthenticated TCP cache node plus a private admin HTTP listener with pprof,
+and its durability story depends on local disk for the AOF and snapshots.
+
+A public single-node Railway-style deploy would misrepresent both the trust
+boundary and the persistence contract. The truthful runnable surfaces in this
+repository are the local binary and the private Docker Compose topology
+documented in [docs/architecture/deployment-view.md](docs/architecture/deployment-view.md).
+
 ## 17. How to run tests
 
 ```sh

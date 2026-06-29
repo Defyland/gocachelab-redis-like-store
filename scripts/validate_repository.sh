@@ -22,6 +22,7 @@ docs/domain/aggregates.md
 docs/domain/invariants.md
 docs/domain/state-machines.md
 docs/api/README.md
+docs/architecture/deployment-view.md
 docs/events/README.md
 docs/security/threat-model.md
 docs/scalability.md
@@ -64,6 +65,7 @@ for heading in \
   'Target users' \
   'Main features' \
   'Architecture overview' \
+  'Deployment truth' \
   'Testing strategy' \
   'Performance benchmarks' \
   'Observability' \
@@ -75,6 +77,21 @@ do
     exit 1
   }
 done
+
+grep -q "does not ship a Railway demo" README.md || {
+  echo "README must explain why Railway is intentionally omitted" >&2
+  exit 1
+}
+
+grep -q "Hosted demo intentionally omitted" docs/architecture/deployment-view.md || {
+  echo "deployment view must explain why a hosted demo is intentionally omitted" >&2
+  exit 1
+}
+
+grep -q "private network" docs/architecture/deployment-view.md || {
+  echo "deployment view must preserve the private-network trust boundary" >&2
+  exit 1
+}
 
 for adr in \
   docs/adr/0001-build-the-store-in-go.md \
@@ -96,4 +113,3 @@ if grep -R "TODO\\|TBD\\|production-ready" README.md docs benchmarks 2>/dev/null
 fi
 
 echo "repository structure validation passed"
-
