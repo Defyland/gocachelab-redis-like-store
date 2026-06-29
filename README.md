@@ -7,6 +7,10 @@ engineers who need to study systems programming without hiding behind Redis
 itself. It exposes a TCP protocol, TTL semantics, append-only durability,
 snapshotting, pprof, and metrics in one small codebase.
 
+This repository is an R&D asset for engineers studying cache internals and
+failure modes. It is intentionally runnable, but it is not positioned as a
+hosted managed cache product.
+
 ## 2. Problem it solves
 
 Many backend challenges only prove framework fluency. This project focuses on
@@ -129,9 +133,10 @@ printf 'SET user:1 Ada\r\nGET user:1\r\nQUIT\r\n' | nc 127.0.0.1 7379
 
 ## 16.1 Deployment truth
 
-Gocachelab intentionally does not ship a Railway demo. The product boundary is
-an unauthenticated TCP cache node plus a private admin HTTP listener with pprof,
-and its durability story depends on local disk for the AOF and snapshots.
+Gocachelab intentionally does not ship a Railway demo. As an R&D asset, the
+product boundary is an unauthenticated TCP cache node plus a private admin HTTP
+listener with pprof, and its durability story depends on local disk for the AOF
+and snapshots.
 
 A public single-node Railway-style deploy would misrepresent both the trust
 boundary and the persistence contract. The truthful runnable surfaces in this

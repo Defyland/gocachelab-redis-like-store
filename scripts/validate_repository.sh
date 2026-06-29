@@ -83,6 +83,11 @@ grep -q "does not ship a Railway demo" README.md || {
   exit 1
 }
 
+grep -q "R&D asset" README.md || {
+  echo "README must classify the repository as an R&D asset" >&2
+  exit 1
+}
+
 grep -q "Hosted demo intentionally omitted" docs/architecture/deployment-view.md || {
   echo "deployment view must explain why a hosted demo is intentionally omitted" >&2
   exit 1
