@@ -179,3 +179,11 @@ Runbooks live under [docs/runbooks](docs/runbooks).
 - Optional sharded map for write-heavy workloads.
 - Connection limits and ACLs for exposed deployments.
 - Replication protocol for warm standby nodes.
+
+## 20. License
+
+This repository is published under the MIT License. See
+[LICENSE.txt](LICENSE.txt).
+
+That keeps the implementation, benchmark evidence, and operational notes
+reusable for study instead of leaving reuse legally ambiguous.
